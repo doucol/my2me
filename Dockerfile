@@ -9,7 +9,7 @@ RUN apt-get install -y build-essential git \
   nginx supervisor
 
 RUN apt-get update
-RUN apt-get upgrade -y
+#RUN apt-get upgrade -y
 
 # install our code
 add . /home/docker/code/
