@@ -1,0 +1,29 @@
+from ubuntu:trusty
+maintainer doucol
+
+RUN add-apt-repository -y ppa:nginx/stable
+RUN apt-get update
+
+RUN apt-get install -y build-essential git \
+  python python-dev python-setuptools python-software-properties sqlite3 \
+  nginx supervisor
+
+RUN apt-get update
+RUN apt-get upgrade -y
+
+# install our code
+add . /home/docker/code/
+
+# setup all the configfiles
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+RUN rm /etc/nginx/sites-enabled/default
+RUN ln -s /home/docker/code/nginx-app.conf /etc/nginx/sites-enabled/
+RUN ln -s /home/docker/code/supervisor-app.conf /etc/supervisor/conf.d/
+
+# install python packages & all requirements for our python app
+RUN easy_install pip
+RUN pip install uwsgi
+RUN pip install -r /home/docker/code/app/requirements.txt
+
+expose 80
+cmd ["supervisord", "-n"]
