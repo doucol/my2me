@@ -1,12 +1,11 @@
 from ubuntu:trusty
 maintainer doucol
 
-RUN add-apt-repository -y ppa:nginx/stable
 RUN apt-get update
-
-RUN apt-get install -y build-essential git \
-  python python-dev python-setuptools python-software-properties sqlite3 \
-  nginx supervisor
+RUN apt-get install -y build-essential git software-properties-common \
+  python python-dev python-software-properties python-setuptools sqlite3
+RUN add-apt-repository -y ppa:nginx/stable
+RUN apt-get install -y nginx supervisor
 
 RUN apt-get update
 #RUN apt-get upgrade -y
